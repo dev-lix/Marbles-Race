@@ -11,7 +11,7 @@ every track is assembled from randomized pieces at load time, validated for
 gaps with raycasts before a race can start, and kept in sync with the render
 scene frame by frame.
 
-Built with Claude Code as an AI pair-programmer. Architecture decisions (physics engine choice, track module design, state machine) were mine; Claude Code handled implementation.
+Built with Claude Code as an AI pair-programmer. Architecture decisions (physics engine choice, track module design, states) were mine; Claude Code handled implementation.
 
 ![gameplay](./docs/gameplay.gif)
 
