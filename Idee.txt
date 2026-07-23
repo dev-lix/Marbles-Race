@@ -1,0 +1,74 @@
+ein Three.Js Kugel Rennspiel.
+
+TechStack 
+
+Here are the official sources for each piece of the stack:
+
+Three.js (rendering) — threejs.org for the main site, threejs.org/docs for the API reference, threejs.org/manual for the conceptual guide (start here if new to it).
+
+Rapier (physics) — rapier.rs main site, rapier.rs/docs/user_guides/javascript/getting_started_js for the JS/WASM getting-started guide, github.com/dimforge/rapier for source. Worth also bookmarking sbcode.net/threejs/physics-rapier — a solid third-party tutorial specifically on wiring Rapier to Three.js.
+
+Vite (build tool) — vite.dev is the current official domain (vitejs.dev redirects here now), guide at vite.dev/guide.
+
+TypeScript — typescriptlang.org/docs, handbook specifically at typescriptlang.org/docs/handbook/intro.html.
+
+Howler.js (audio, optional) — howlerjs.com, docs at howlerjs.com/docs, source at github.com/goldfire/howler.js.
+
+For EffectComposer and CSS2DRenderer (bloom and floating labels), those live inside Three.js's examples/jsm addons — no separate site, just the Three.js docs/manual above under "post-processing" and "renderers."
+
+Hier was Claude dazu sagt: 
+
+I'm building "Marbles Race" — a 3D marble race game in the browser, as a portfolio project.
+The project is already scaffolded with Vite + TypeScript (vanilla-ts template). Nothing else
+is installed yet.
+
+STACK
+- Three.js for rendering
+- @dimforge/rapier3d-compat for physics (use the -compat package specifically, not plain
+  rapier3d — it embeds WASM as base64 and avoids Vite bundler import issues; requires an
+  async init step before anything else runs)
+- Vite + TypeScript (already scaffolded)
+
+CONCEPT
+Marbles tumble down a procedurally generated obstacle track (ramps, funnels, spinners,
+bumper pits) toward a finish line. 8-12 marbles race simultaneously; the player picks/bets
+on one before the race starts, then watches physics decide the winner. No backend — fully
+client-side.
+
+BUILD IN THIS ORDER, confirming each phase works before moving to the next:
+
+Phase 1 — Skeleton
+- Install three, @dimforge/rapier3d-compat, and @types/three
+- Set up a Three.js scene, camera, renderer, and window resize handling
+- Initialize Rapier (async), create a static ground plane collider + matching mesh
+- Spawn one dynamic sphere rigid body with a matching Three.js mesh, sync its position/
+  rotation from the physics world every frame, confirm it falls and lands correctly
+
+Phase 2 — Track
+- Build 2-3 reusable obstacle modules as functions returning {mesh, collider}: a straight
+  ramp, a zigzag ramp, and a funnel
+- Chain them end-to-end into a fixed test track using start/end anchor points per module
+- Add a start gate (a collider/kinematic body removed at race start) and a finish line
+  trigger volume that detects when a marble crosses it
+
+Phase 3 — Marbles
+- Spawn N marbles (distinct colors via MeshPhysicalMaterial, glossy) with slight randomized
+  offsets so they don't perfectly overlap at spawn
+- Implement a race state machine: idle -> countdown -> racing -> finished
+- Rank marbles by finish-line crossing order
+
+Phase 4 — Camera & UI
+- Camera follow modes: leader-cam, player's-marble-cam, overview (toggle-able)
+- HUD: countdown, live ranking list, race timer
+- Results screen with a podium for top 3
+
+Phase 5 — Polish
+- Bloom via EffectComposer for a glossy look
+- Add the spinner and bumper-pit obstacle modules, randomize track module order/count
+  per race
+- Optional: betting mode (pick a marble pre-race, win/lose banner after), sound effects,
+  particle trail on the leader
+
+Work incrementally, run `npm run dev` to sanity-check visually after each phase, and ask
+me before making major structural decisions (e.g. how colliders are shaped for the
+spinner/funnel geometry).

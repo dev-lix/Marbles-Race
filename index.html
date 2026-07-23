@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marbles Race</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <div id="countdown-overlay"></div>
+
+    <div id="top-bar">
+      <div id="timer">0.0s</div>
+      <button id="start-button" type="button">Start Race</button>
+      <button id="new-track-button" type="button">New Track</button>
+      <div id="camera-controls">
+        <button class="cam-btn" data-mode="overview" type="button">Overview</button>
+        <button class="cam-btn" data-mode="leader" type="button">Leader Cam</button>
+      </div>
+    </div>
+
+    <div id="marble-picker"></div>
+
+    <div id="ranking-panel">
+      <h3>Standings</h3>
+      <ol id="ranking-list"></ol>
+    </div>
+
+    <div id="results-overlay">
+      <div id="results-panel">
+        <h2>Results</h2>
+        <div id="podium"></div>
+        <ol id="results-list"></ol>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
